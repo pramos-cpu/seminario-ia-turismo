@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>70ª CAM & Seminario: Inteligencia Artificial y Turismo en las Américas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      --primary: #003f72;
+      --secondary: #0077b6;
+      --accent: #00b4d8;
+      --bg: #f5f7fb;
+      --text: #0f172a;
+      --card: #ffffff;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at top left, #e0f2fe 0, #f5f7fb 45%, #eef2ff 100%);
+      min-height: 100vh;
+    }
+    a { color: inherit; }
+
+    /* LAYOUT */
+    .page {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    main {
+      flex: 1;
+      max-width: 1100px;
+      margin: 0 auto 2.5rem;
+      padding: 1rem 1.5rem 2.5rem;
+    }
+
+    /* HEADER & NAV */
+    header.hero {
+      background: linear-gradient(135deg, rgba(0,63,114,0.97), rgba(0,119,182,0.92));
+      color: #f9fafb;
+      padding: 1.2rem 1.5rem 1.8rem;
+      position: relative;
+      overflow: hidden;
+    }
+    header.hero::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(255,255,255,0.08) 0, transparent 50%),
+        radial-gradient(circle at 100% 0%, rgba(0,180,216,0.18) 0, transparent 55%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+    .hero-inner {
+      position: relative;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+      gap: 1.5rem;
+      align-items: center;
+    }
+    @media (max-width: 800px) {
+      .hero-inner {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+    .hero-main h1 {
+      font-size: clamp(1.8rem, 2.7vw, 2.3rem);
+      margin-bottom: 0.4rem;
+      letter-spacing: -0.03em;
+    }
+    .hero-main h2 {
+      font-size: 0.98rem;
+      font-weight: 500;
+      opacity: 0.95;
+      margin-bottom: 0.8rem;
+    }
+    .hero-main p {
+      font-size: 0.95rem;
+      max-width: 42rem;
+      opacity: 0.95;
+      margin-bottom: 0.4rem;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.6rem;
+    }
+    .hero-tag {
+      font-size: 0.75rem;
+      padding: 0.15rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.18);
+      border: 1px solid rgba(148,163,184,0.7);
+      backdrop-filter: blur(6px);
+    }
+    .hero-side {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      align-items: flex-end;
+    }
+    .hero-badge {
+      font-size: 0.8rem;
+      padding: 0.15rem 0.6rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.9);
+      background: rgba(15,23,42,0.25);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .hero-badge span.icon {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34,197,94,0.4);
+    }
+    .hero-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      justify-content: flex-end;
+    }
+    .hero-stat {
+      background: rgba(15,23,42,0.25);
+      border-radius: 0.9rem;
+      padding: 0.5rem 0.7rem;
+      font-size: 0.75rem;
+      border: 1px solid rgba(148,163,184,0.9);
+      min-width: 7rem;
+    }
+    .hero-stat strong {
+      display: block;
+      font-size: 0.95rem;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      background: rgba(15,23,42,0.90);
+      color: #e5e7eb;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(148,163,184,0.6);
+    }
+    .navbar-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0.5rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .navbar-brand span.logo-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 7px;
+      background: linear-gradient(135deg, #38bdf8, #a855f7);
+      box-shadow: 0 0 0 3px rgba(56,189,248,0.4);
+    }
+
+    .navbar-links {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.86rem;
+    }
+    .navbar-links a {
+      text-decoration: none;
+      color: #e5e7eb;
+      padding: 0.15rem 0.65rem;
+      border-radius: 999px;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .navbar-links a:hover {
+      background: rgba(148,163,184,0.3);
+    }
+
+    /* Hamburger */
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: 1px solid rgba(148,163,184,0.8);
+      border-radius: 999px;
+      padding: 0.3rem 0.45rem;
+      color: #e5e7eb;
+      cursor: pointer;
+    }
+    .nav-toggle span {
+      display: block;
+      width: 18px;
+      height: 2px;
+      background: currentColor;
+      border-radius: 999px;
+      position: relative;
+    }
+    .nav-toggle span::before,
+    .nav-toggle span::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      width: 18px;
+      height: 2px;
+      border-radius: 999px;
+      background: currentColor;
+      transition: transform 0.18s ease, opacity 0.18s ease;
+    }
+    .nav-toggle span::before { top: -5px; }
+    .nav-toggle span::after { top: 5px; }
+
+    @media (max-width: 800px) {
+      .navbar-inner {
+        align-items: center;
+      }
+      .navbar-links {
+        position: absolute;
+        inset: auto 0 0 0;
+        transform: translateY(100%);
+        background: rgba(15,23,42,0.97);
+        border-top: 1px solid rgba(148,163,184,0.6);
+        display: none;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0.4rem 1.5rem 0.7rem;
+      }
+      .navbar-links.open {
+        display: flex;
+      }
+      .nav-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .nav-toggle.open span {
+        background: transparent;
+      }
+      .nav-toggle.open span::before {
+        transform: translateY(5px) rotate(45deg);
+      }
+      .nav-toggle.open span::after {
+        transform: translateY(-5px) rotate(-45deg);
+      }
+    }
+
+    /* SECTIONS */
+    section {
+      margin-top: 2rem;
+    }
+    section:first-of-type {
+      margin-top: 1.6rem;
+    }
+    section-header {
+      display: block;
+      margin-bottom: 0.8rem;
+    }
+    section-header h2 {
+      font-size: 1.3rem;
+      color: var(--primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    section-header h2::before {
+      content: "";
+      width: 8px;
+      height: 22px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, var(--accent), var(--secondary));
+    }
+    section-header p {
+      font-size: 0.9rem;
+      color: #64748b;
+      margin-top: 0.2rem;
+      max-width: 42rem;
+    }
+
+    /* CARDS */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+    .card {
+      background: var(--card);
+      border-radius: 1rem;
+      padding: 0.9rem 1rem 1rem;
+      border: 1px solid rgba(148,163,184,0.45);
+      box-shadow:
+        0 18px 45px rgba(15,23,42,0.07),
+        0 0 0 1px rgba(255,255,255,0.7);
+      backdrop-filter: blur(4px);
+    }
+    .card h3 {
+      font-size: 1.03rem;
+      margin-bottom: 0.2rem;
+      color: var(--secondary);
+    }
+    .card p {
+      font-size: 0.9rem;
+      margin-bottom: 0.4rem;
+      color: #475569;
+    }
+    .meta {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #64748b;
+      margin-bottom: 0.25rem;
+    }
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-top: 0.4rem;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+      padding: 0.28rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      border: 1px solid var(--secondary);
+      background: #eff6ff;
+      color: var(--secondary);
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.1s ease;
+    }
+    .btn.primary {
+      background: linear-gradient(135deg, var(--secondary), #38bdf8);
+      border-color: transparent;
+      color: white;
+      box-shadow: 0 6px 16px rgba(37,99,235,0.4);
+    }
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(15,23,42,0.12);
+    }
+    .btn span.dot {
+      width: 6px; height: 6px;
+      border-radius: 999px;
+      background: currentColor;
+    }
+
+    ul {
+      padding-left: 1.1rem;
+      margin-bottom: 0.4rem;
+    }
+    ul li {
+      font-size: 0.88rem;
+      color: #475569;
+      margin-bottom: 0.15rem;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+      margin: 0.2rem 0 0.4rem;
+    }
+    .pill {
+      font-size: 0.75rem;
+      padding: 0.16rem 0.55rem;
+      border-radius: 999px;
+      background: #e0f2fe;
+      border: 1px solid #bae6fd;
+      color: #0f172a;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid rgba(148,163,184,0.5);
+      background: rgba(15,23,42,0.95);
+      color: #cbd5f5;
+      padding: 0.9rem 1.5rem 1.4rem;
+      font-size: 0.8rem;
+    }
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      align-items: center;
+    }
+    .footer-inner a {
+      color: #e0f2fe;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-main">
+        <h1>70ª CAM & Seminario “Inteligencia Artificial y Turismo en las Américas”</h1>
+        <h2>ONU Turismo &amp; MINCETUR · Lima, 1–3 de agosto</h2>
+        <p>
+          Esta página reúne los videos y presentaciones del Seminario sobre Inteligencia Artificial y Turismo en las Américas
+          y de la 70ª Comisión Regional para las Américas (CAM), para facilitar su consulta por los equipos del MINCETUR
+          y aliados estratégicos.
+        </p>
+        <p>
+          Puedes utilizar estos contenidos como insumos para el diseño de políticas, programas y proyectos
+          vinculados a IA, transformación digital y competitividad turística.
+        </p>
+        <div class="hero-tags">
+          <span class="hero-tag">#InteligenciaArtificial</span>
+          <span class="hero-tag">#Turismo</span>
+          <span class="hero-tag">#TransformaciónDigital</span>
+          <span class="hero-tag">#Perú</span>
+          <span class="hero-tag">#ONUTurismo</span>
+        </div>
+      </div>
+      <div class="hero-side">
+        <div class="hero-badge">
+          <span class="icon"></span>
+          <span>Contenido disponible bajo demanda</span>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <strong>+10</strong>
+            Conferencias y paneles
+          </div>
+          <div class="hero-stat">
+            <strong>4</strong>
+            Startups IA en turismo
+          </div>
+          <div class="hero-stat">
+            <strong>70ª</strong>
+            Comisión Regional (Américas)
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <div class="navbar-brand">
+        <span class="logo-dot"></span>
+        <span>IA &amp; Turismo – CAM 70</span>
+      </div>
+      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
+        <span></span>
+      </button>
+      <div class="navbar-links">
+        <a href="#sobre">Sobre el evento</a>
+        <a href="#seminario">Seminario IA</a>
+        <a href="#mesas">Mesas</a>
+        <a href="#pitch">Pitch Challenge</a>
+        <a href="#cam70">70ª CAM</a>
+        <a href="#recursos">Recursos</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- SOBRE -->
+    <section id="sobre">
+      <section-header>
+        <h2>Sobre la 70ª CAM y el Seminario</h2>
+        <p>
+          La Comisión Regional para las Américas de ONU Turismo reúne anualmente a los Estados Miembros de la región y
+          a Miembros Afiliados del sector privado y la academia. En  esta 70ª edición, el Perú fue país anfitrión e
+          incorporó un Seminario dedicado a la Inteligencia Artificial aplicada al turismo.
+        </p>
+      </section-header>
+      <p style="font-size:0.9rem;color:#475569;margin-bottom:0.2rem;">
+        El Seminario “Inteligencia Artificial y Turismo en las Américas: impacto y oportunidades de la IA” tuvo como objetivos:
+      </p>
+      <ul>
+        <li>Analizar aplicaciones actuales y potenciales de la IA en el turismo.</li>
+        <li>Identificar oportunidades para destinos, empresas y emprendedores turísticos.</li>
+        <li>Debatir implicancias éticas y necesidades de gobernanza de la IA en el sector.</li>
+      </ul>
+    </section>
+
+    <!-- SEMINARIO -->
+    <section id="seminario">
+      <section-header>
+        <h2>Seminario: Inteligencia Artificial y Turismo en las Américas</h2>
+        <p>Videos y presentaciones principales del Seminario.</p>
+      </section-header>
+
+      <div class="card-grid">
+
+        <!-- APERTURA -->
+        <article class="card">
+          <div class="meta">Apertura</div>
+          <h3>Palabras de bienvenida</h3>
+          <p>
+            Mensajes de apertura que destacan el rol de la innovación y la IA para un turismo competitivo,
+            sostenible e inclusivo en las Américas.
+          </p>
+          <ul>
+            <li>Gustavo Santos, Director Regional para las Américas, ONU Turismo.</li>
+            <li>Desilú León Chempén, Ministra de Comercio Exterior y Turismo del Perú.</li>
+          </ul>
+          <div class="btn-row">
+            <a class="btn" target="_blank"
+               href="https://minceturgobpe-my.sharepoint.com/:v:/g/personal/pramos_mincetur_gob_pe/EX5I5Gbr9wRJr_9hbyMkuQ4BE7boTaWSCC1aFC8CiuXMeA?e=cWV996">
+              <span class="dot"></span> Video – G. Santos
+            </a>
+            <a class="btn" target="_blank"
+               href="https://minceturgobpe-my.sharepoint.com/:v:/g/personal/pramos_mincetur_gob_pe/EbZS76m_LlRPkKS6YKzs0hQBFFAyg-SqSR0etyACatVsCw?e=Kpz91E">
+              <span class="dot"></span> Video – Ministra
+            </a>
+          </div>
+        </article>
+
+        <!-- NATALIA BAYONA (SEMINARIO) -->
+        <article class="card">
+          <div class="meta">Conferencia</div>
+          <h3>Tendencias en Digitalización y Competencias Digitales</h3>
+          <p><strong>Expositora:</strong> Natalia Bayona, Directora Ejecutiva, ONU Turismo.</p>
+          <ul>
+            <li>Brechas de conectividad y habilidades digitales en la región.</li>
+            <li>IA y nuevas tecnologías al servicio de destinos y empresas.</li>
+            <li>Programas de formación y oportunidades para MiPymes y funcionarios públicos.</li>
+          </ul>
+          <div class="pill-row">
+            <span class="pill">Online Academy</span>
+            <span class="pill">Formación en IA</span>
+            <span class="pill">MiPymes turísticas</span>
+          </div>
+          <div class="btn-row">
+            <a class="btn primary" target="_blank"
+               href="https://minceturgobpe-my.sharepoint.com/:v:/g/personal/pramos_mincetur_gob_pe/EeGTAwJ2yW1BspT9dF4Sd6gBnISgNwwXdI16cse-rgFrfw?e=cIcQop">
+              <span class="dot"></span> Ver video
+            </a>
+            <a class="btn" target="_blank"
+               href="https://minceturgobpe-my.sharepoint.com/:b:/g/personal/pramos_mincetur_gob_pe/EQuWpR7qQ0pAgrA2mqFkJ5QB5gpb9RN_V0h8VStgIH6MJA?e=7QslFu">
+              Presentación
+            </a>
+          </div>
+        </article>
+
+        <!-- ANTONIO LÓPEZ DE ÁVILA -->
+        <article class="card">
+          <div class="meta">Conferencia</div>
+          <h3>La empresa turística en la era de los DTI</h3>
+          <p><strong>Expositor:</strong> Antonio López de Ávila, Director de Innovación, Educación e Inversiones, ONU Turismo.</p>
+          <ul>
+            <li>IA como herramienta estratégica en toda la cadena de valor turística.</li>
+            <li>Retos y oportunidades para las Américas en Destinos Turísticos Inteligentes.</li>
+            <li>Cooperación de ONU Turismo con gobiernos y sector privado.</li>
+          </ul>
+          <div class="btn-row">
+            <a class="btn primary" target="_blank"
+               href="https://minceturgobpe-my.sharepoint.com/:v:/g/personal/pramos_mincetur_gob_pe/ESBbAQBS7OVEglvj7U6BnQYB5sV0WlVFE3dTWp-kb43dNg?e=1Q5q0A">
+              <span class="dot"></span> Ver video
+            </a>
+            <a class="btn" target="_blank"
+               href="https://minceturgobpe-my.sharepoint.com/:b:/g/personal/pramos_mincetur_gob_pe/ER_vOlYELzlKnvluutXOzDwBBpAEE9bQTu-H1ODgykdUgA?e=65CYW7">
+              Presentación
+            </a>
+          </div>
+        </article>
+
+        <!-- PANEL MINISTERIAL -->
+        <article class="card">
+          <div class="meta">Panel ministerial</div>
+          <h3>Regulación y Futuro de la IA en el Turismo</h3>
+          <p>
+            Panel con altas autoridades que aborda marcos regulatorios, ética y oportunidades de cooperación regional
+            en IA aplicada al turismo.
+          </p>
+          <div class="btn-row">
+            <a class="btn primary" target="_blank"
+               href="https://minceturgobpe-my.sharepoint.com/:v:/g/personal/pramos_mincetur_gob_pe/EQqNnLF8fK1LvaK_It5N820B-6i15v3X9RVcwMVmpdjNqg?e=I2iQCH">
+              <span class="dot"></span> Ver video del panel
+            </a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- MESAS TEMÁTICAS -->
+    <section id="mesas">
+      <section-header>
+        <h2>Mesas temáticas</h2>
+        <p>Mesas de discusión sobre aplicaciones concretas de IA en destinos, empresas y experiencia del visitante.</p>
+      </section-header>
+
+      <div class="card-grid">
+
+        <article class="card">
+          <div class="meta">Mesa I</div>
+          <h3>IA en la transformación de destinos y productos turísticos</h3>
+          <ul>
+            <li>Gestión de flujos turísticos y planificación basada en datos.</li>
+            <li>Optimización de recursos y sostenibilidad ambiental.</li>
+            <li>Marketing territorial inteligente y segmentación de mercados.</li>
+          </ul>
+          <div class="btn-row">
+            <a class="btn primary" target="_blank"
+               href="https://minceturgobpe-my.sharepoint.com/:v:/g/personal/pramos_mincetur_gob_pe/EeH7NisS9TpGg8PMl_ZOfUkBSxd5oT6aJr5e-RBk-ce9EA?e=rZwmZx">
+              <span class="dot"></span> Ver video
+            </a>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="meta">Mesa II</div>
+          <h3>Digitalización y gestión empresarial con IA</h3>
+          <ul>
+            <li>Herramientas de marketing digital y segmentación con IA.</li>
+            <li>Chatbots y asistentes para atención al cliente.</li>
+            <li>Optimización de ingresos y procesos operativos.</li>
+          </ul>
+          <div class="btn-row">
+            <a class="btn primary" target="_blank"
+               href="https://minceturgobpe-my.sharepoint.com/:v:/g/personal/pramos_mincetur_gob_pe/Ebx3-Wy-lipNgg0F7dy5qIcBFm8MsUIBpPDaQ034ZLrotA?e=GGborx">
+              <span class="dot"></span> Ver video
+            </a>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="meta">Mesa III</div>
+          <h3>Potenciando la experiencia del turista con IA</h3>
+          <ul>
+            <li>Personalización avanzada de la experiencia del visitante.</li>
+            <li>Accesibilidad y soluciones inclusivas basadas en IA.</li>
+            <li>Monitoreo de satisfacción y gestión de comentarios en tiempo real.</li>
+          </ul>
+          <div class="btn-row">
+            <a class="btn primary" target="_blank"
+               href="https://minceturgobpe-my.sharepoint.com/:v:/g/personal/pramos_mincetur_gob_pe/ESgWLtvyOkhJsiAqJgKSwVwBfwIl1bbLShVvnx-ecPzLxw?e=PdVdpn">
+              <span class="dot"></span> Ver video
+            </a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- PITCH CHALLENGE -->
+    <section id="pitch">
+      <section-header>
+        <h2>Pitch Challenge – Startups de IA para el turismo</h2>
+        <p>Cuatro soluciones de IA para mejorar competitividad, accesibilidad y sostenibilidad en turismo.</p>
+      </section-header>
+
+      <div class="card-grid">
+
+        <article class="card">
+          <div class="meta">Startup</div>
+          <h3>SENZA Club</h3>
+          <p>Solución para turismo inclusivo y accesible para personas con discapacidad.</p>
+          <ul>
+            <li>Soporte para discapacidad visual y auditiva.</li>
+            <li>Experiencias guiadas accesibles en destinos.</li>
+          </ul>
+          <div class="btn-row">
+            <a class="btn primary" target="_blank"
+               href="https://minceturgobpe-my.sharepoint.com/:v:/g/personal/pramos_mincetur_gob_pe/EZ6sQD2pQ6hApO0AnmeZ_rcBoH5Fs672Gz2uGEMmrcq5Vg?e=deRl7W">
+              <span class="dot"></span> Video
+            </a>
+            <a class="btn" target="_blank"
+               href="https://minceturgobpe-my.sharepoint.com/:b:/g/personal/pramos_mincetur_gob_pe/EUZGFaOtRqtGjSn0FKI-7tMBk_xYnr4qH7srEzC9qlV0uQ?e=q5kCzJ">
+              Presentación
+            </a>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="meta">Startup</div>
+          <h3>SMART Tour</h3>
+          <p>Plataforma de gestión de destinos con análisis de movilidad y recomendación inteligente.</p>
+          <ul>
+            <li>Visualización de flujos turísticos.</li>
+            <li>Recomendaciones personalizadas de rutas y atractivos.</li>
+          </ul>
+          <div class="btn-row">
+            <a class="btn primary" target="_blank"
+               href="https://minceturgobpe-my.sharepoint.com/:v:/g/personal/pramos_mincetur_gob_pe/EU7ebpMf_1BMrhnmAOnSw4cBoB0_a5wiuQ_YJp7bs9bQBw?e=NsaaRQ">
+              <span class="dot"></span> Video
+            </a>
+            <a class="btn" target="_blank"
+               href="https://minceturgobpe-my.sharepoint.com/:b:/g/personal/pramos_mincetur_gob_pe/EaVaZ4Z4ocBLr9HlY4S2bNUBMMwqX2bh1l4-nRiYjqH_6w?e=sIArBR">
+              Presentación
+            </a>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="meta">Startup</div>
+          <h3>B-Human</h3>
+          <p>Chatbots con IA generativa para atención multicanal y multilingüe.</p>
+          <ul>
+            <li>Integración con web, redes sociales y WhatsApp.</li>
+            <li>Reducción de tiempos de respuesta y mejora de satisfacción.</li>
+          </ul>
+          <div class="btn-row">
+            <a class="btn primary" target="_blank"
+               href="https://minceturgobpe-my.sharepoint.com/:v:/g/personal/pramos_mincetur_gob_pe/Ef7-n3JoIKNMhVDn6_KhUE4BBDH8T48p5YPOtGhBRHm5oA?e=K9c3q3">
+              <span class="dot"></span> Video
+            </a>
+            <a class="btn" target="_blank"
+               href="https://minceturgobpe-my.sharepoint.com/:b:/g/personal/pramos_mincetur_gob_pe/ER-g_dX5P2lDntDPiC_8u3wBaVWEU-z14VOdwWr2mpwhlQ?e=pEvGsJ">
+              Presentación
+            </a>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="meta">Startup</div>
+          <h3>EULER Innovations</h3>
+          <p>Soluciones de análisis predictivo para hoteles y operadores turísticos.</p>
+          <ul>
+            <li>Modelos de demanda y fijación dinámica de precios.</li>
+            <li>Optimización del uso de recursos y capacidad.</li>
+          </ul>
+          <div class="btn-row">
+            <a class="btn primary" target="_blank"
+               href="https://minceturgobpe-my.sharepoint.com/:v:/g/personal/pramos_mincetur_gob_pe/EUs4AYS8QcxPh_bjutUfXcoBLvUYfypUkk6cWmfNbqbeXw?e=2eOV3H">
+              <span class="dot"></span> Video
+            </a>
+            <a class="btn" target="_blank"
+               href="https://minceturgobpe-my.sharepoint.com/:b:/g/personal/pramos_mincetur_gob_pe/EXl-Y3O7kQVApl-v_tFTmZ4B_AnRFoZyLYEQ-f2dhPhAmg?e=PZnjOL">
+              Presentación
+            </a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- 70ª CAM -->
+    <section id="cam70">
+      <section-header>
+        <h2>70ª Comisión Regional para las Américas (CAM)</h2>
+        <p>Intervenciones destacadas de la 70ª CAM vinculadas a conectividad, innovación e inversiones en turismo.</p>
+      </section-header>
+
+      <div class="card-grid">
+
+        <article class="card">
+          <div class="meta">Intervención</div>
+          <h3>Impulsando el futuro del turismo en las Américas</h3>
+          <p><strong>Expositora:</strong> Natalia Bayona.</p>
+          <ul>
+            <li>Educación, innovación e inversión como pilares para el desarrollo turístico.</li>
+            <li>Importancia de la IA, el big data y la economía del conocimiento.</li>
+          </ul>
+          <div class="btn-row">
+            <a class="btn primary" target="_blank"
+               href="https://minceturgobpe-my.sharepoint.com/:v:/g/personal/pramos_mincetur_gob_pe/EYkBo8tmmN5DoyStmkILwp8BUdYxHNGeWzgu5cSsBRtI_g?e=cVsQQJ">
+              <span class="dot"></span> Video
+            </a>
+            <a class="btn" target="_blank"
+               href="https://minceturgobpe-my.sharepoint.com/:b:/g/personal/pramos_mincetur_gob_pe/EXmhBefjLnpLr4qGMQGmiREBIWpT7qjxBpSoBAlXqUslLg?e=RW5cx7">
+              Presentación
+            </a>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="meta">IATA</div>
+          <h3>Conectividad aérea y turismo en América Latina y el Caribe</h3>
+          <p>Perspectiva de IATA sobre desafíos y oportunidades para mejorar la conectividad de la región.</p>
+          <ul>
+            <li>Capacidad aeroportuaria, costos operativos y entorno regulatorio.</li>
+            <li>Digitalización de procesos y experiencia del pasajero.</li>
+          </ul>
+          <div class="btn-row">
+            <a class="btn primary" target="_blank"
+               href="https://minceturgobpe-my.sharepoint.com/:v:/g/personal/pramos_mincetur_gob_pe/ETdUeZ7ZnpRBl9J95IXGdJwByYakJgZH6-nh6FUHkpu_Zg?e=c2UShw">
+              <span class="dot"></span> Video
+            </a>
+            <a class="btn" target="_blank"
+               href="https://minceturgobpe-my.sharepoint.com/:b:/g/personal/pramos_mincetur_gob_pe/ESgR8iY5IUhLhQ5VNEJ4t9QBTfCjLIWoJNaAsriO6Lnj_w?e=OfGV3l">
+              Presentación
+            </a>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="meta">Amadeus</div>
+          <h3>Competitividad turística de las Américas</h3>
+          <p>Análisis de tendencias de demanda, canales de reserva y comportamiento del viajero.</p>
+          <ul>
+            <li>Uso de big data para la toma de decisiones.</li>
+            <li>Personalización de la oferta y segmentación de mercados.</li>
+          </ul>
+          <div class="btn-row">
+            <a class="btn primary" target="_blank"
+               href="https://minceturgobpe-my.sharepoint.com/:v:/g/personal/pramos_mincetur_gob_pe/EUJi3XuxoWdCsSFsY5kEvgEBF5DtVOBUMVcTKk-qTca3Eg?e=ch7rQN">
+              <span class="dot"></span> Video
+            </a>
+            <a class="btn" target="_blank"
+               href="https://minceturgobpe-my.sharepoint.com/:b:/g/personal/pramos_mincetur_gob_pe/ESBUqSaUptZNjLdbzl-iMMwB9xrhTewd80MCWf8rdl_57Q?e=iOaXqA">
+              Presentación
+            </a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- RECURSOS -->
+    <section id="recursos">
+      <section-header>
+        <h2>Recursos y contacto</h2>
+        <p>Material de apoyo y punto de contacto en MINCETUR.</p>
+      </section-header>
+
+      <article class="card">
+        <div class="meta">Descargas</div>
+        <h3>Presentación resumen</h3>
+        <p style="font-size:0.9rem;">
+          Puedes publicar aquí el enlace a la presentación resumen de MINCETUR (PPTX o PDF) cuando esté disponible en
+          SharePoint, OneDrive o la intranet institucional.
+        </p>
+        <div class="btn-row">
+          <a class="btn" target="_blank" href="#">
+            Añadir enlace a la presentación resumen
+          </a>
+        </div>
+
+        <div style="margin-top:0.8rem;">
+          <div class="meta">Contacto</div>
+          <p style="font-size:0.9rem;">
+            Dirección de Facilitación y Cultura Turística – MINCETUR<br>
+            (Completar con correo institucional o enlace a la web de MINCETUR).
+          </p>
+        </div>
+      </article>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <span>ONU Turismo &amp; MINCETUR · 70ª CAM &amp; Seminario “IA y Turismo en las Américas”.</span>
+      <span>Versión demostrativa para uso interno.</span>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  const navToggle = document.querySelector('.nav-toggle');
+  const navLinks = document.querySelector('.navbar-links');
+
+  if (navToggle && navLinks) {
+    navToggle.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      navToggle.classList.toggle('open', isOpen);
+      navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+
+    // Cerrar menú al hacer clic en un enlace (en móvil)
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (navLinks.classList.contains('open')) {
+          navLinks.classList.remove('open');
+          navToggle.classList.remove('open');
+          navToggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+    });
+  }
+</script>
+
+</body>
+</html>
